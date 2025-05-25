@@ -1,0 +1,52 @@
+{
+  "name": "discord-message-renderer",
+  "version": "1.0.0",
+  "description": "A TypeScript library for rendering Discord messages to images with full markdown, emoji, and attachment support",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "node test/index.js"
+  },
+  "keywords": [
+    "discord",
+    "message",
+    "renderer",
+    "image",
+    "markdown",
+    "typescript",
+    "emoji",
+    "attachments",
+    "stickers"
+  ],
+  "author": "notlmutsaers",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SenorLawyer/discord-message-renderer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/SenorLawyer/discord-message-renderer/issues"
+  },
+  "homepage": "https://github.com/SenorLawyer/discord-message-renderer#readme",
+  "peerDependencies": {
+    "discord.js": "^14.19.3"
+  },
+  "dependencies": {
+    "node-html-to-image": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "discord.js": "^14.19.3",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
