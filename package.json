@@ -39,6 +39,7 @@
     "discord.js": "^14.19.3"
   },
   "dependencies": {
+    "discord-message-renderer": "^1.0.0",
     "node-html-to-image": "^5.0.0"
   },
   "devDependencies": {

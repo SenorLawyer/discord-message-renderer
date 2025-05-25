@@ -1,5 +1,6 @@
 const { render } = require("discord-message-renderer");
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, AttachmentBuilder } = require("discord.js");
+const fs = require("fs");
 
 const client = new Client({
   intents: [
@@ -10,7 +11,7 @@ const client = new Client({
 });
 
 client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Logged in as ${client.user?.tag}!`);
 });
 
 client.on("messageCreate", async (message) => {
@@ -25,21 +26,31 @@ client.on("messageCreate", async (message) => {
         return message.reply("No message to render!");
       }
 
-      const imageBuffer = await render(targetMessage);
+      const options = {
+        width: 800,
+        client: client,
+      };
 
-      const attachment = new AttachmentBuilder(imageBuffer, {
-        name: "rendered-message.png",
-      });
+      const imageBuffer = await render(targetMessage, options);
 
-      await message.reply({
-        content: "Here's your rendered message!",
-        files: [attachment],
-      });
+      if (Buffer.isBuffer(imageBuffer)) {
+        fs.writeFileSync("rendered-message.png", imageBuffer);
+
+        const attachment = new AttachmentBuilder(imageBuffer, {
+          name: "rendered-message.png",
+        });
+
+        await message.reply({
+          content: "Here's your rendered message!",
+          files: [attachment],
+        });
+      }
     } catch (error) {
       console.error("Failed to render message:", error);
-      await message.reply("Failed to render message: " + error.message);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      await message.reply("Failed to render message: " + errorMessage);
     }
   }
 });
 
-client.login("YOUR_BOT_TOKEN");
+client.login(process.env.DISCORD_TOKEN);

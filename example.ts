@@ -2,7 +2,6 @@ import { render, RenderOptions } from "discord-message-renderer";
 import { Client, GatewayIntentBits, AttachmentBuilder, Message } from "discord.js";
 import fs from "fs";
 
-// Create Discord client with proper typing
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -16,13 +15,10 @@ client.on("ready", () => {
 });
 
 client.on("messageCreate", async (message: Message) => {
-  // Skip bot messages
   if (message.author.bot) return;
 
-  // Render message when someone types "!render"
   if (message.content === "!render") {
     try {
-      // Get the previous message to render
       const messages = await message.channel.messages.fetch({ limit: 2 });
       const targetMessage = messages.last();
 
@@ -30,21 +26,16 @@ client.on("messageCreate", async (message: Message) => {
         return message.reply("No message to render!");
       }
 
-      // Render options with type safety
       const options: RenderOptions = {
         width: 800,
         client: client,
       };
 
-      // Render the message with type-safe call
       const imageBuffer = await render(targetMessage, options);
 
-      // Type-safe buffer handling
       if (Buffer.isBuffer(imageBuffer)) {
-        // Save to file
         fs.writeFileSync("rendered-message.png", imageBuffer);
 
-        // Send as attachment
         const attachment = new AttachmentBuilder(imageBuffer, {
           name: "rendered-message.png",
         });
@@ -62,5 +53,4 @@ client.on("messageCreate", async (message: Message) => {
   }
 });
 
-// Login with your bot token
 client.login(process.env.DISCORD_TOKEN);
